@@ -1,0 +1,48 @@
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+>
+<head><title>Home Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<div class="container">
+    <h1>Hello to Spring Boot!</h1>
+    <p>Welcome to <span th:text="${appName}">Our App</span></p>
+
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <h1 th:inline="text">Hello, <span th:text="${#authentication.name}"></span>!</h1>
+
+
+        <a th:href="@{/logout}">LOGOUT</a>
+
+    </div>
+
+    <!--/* displayed if account IS null, indicating that the user IS NOT logged in */-->
+    <div th:unless="${#authorization.expression('isAuthenticated()')}">
+        <h1>Who are you?</h1>
+    </div>
+
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        <h1 th:inline="text">Hello, <span th:text="${#authentication.principal.email}"></span>!</h1>
+    </div>
+
+    <div sec:authorize="hasRole('USER')">Text visible to user.</div>
+    <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+    <div sec:authorize="isAuthenticated()">
+        Text visible only to authenticated users.
+    </div>
+
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+        Authenticated username: <strong sec:authentication="name"></strong>
+        <p>Authenticated user roles:</p>
+        <div sec:authentication="principal.authorities"></div>
+    </div>
+
+</div>
+</body>
+</html>

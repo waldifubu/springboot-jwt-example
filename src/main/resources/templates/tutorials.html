@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml" lang="en">
+<head><title>Home Page</title></head>
+<body>
+<h1>Hello !</h1>
+<p>Welcome to <span th:text="${appName}">Our App</span></p>
+
+<!--
+<table>
+    <tr>
+        <td>My context attribute</td>
+        <td th:text="${#servletContext.getAttribute('tutoriallist')}">42</td>
+    </tr>
+    <tr th:each="attr : ${#servletContext.getAttributeNames()}">
+        <td th:text="${attr}">javax.servlet.context.tempdir</td>
+        <td th:text="${#servletContext.getAttribute(attr)}">/tmp</td>
+    </tr>
+</table>
+-->
+
+<table>
+    <th>Id</th>
+    <th>Title</th>
+    <th>Description</th>
+
+<tr th:each="message : ${tutoriallist}">
+    <td th:text="${message.id}">1</td>
+    <td><a href="#" th:text="${message.title}">Title ...</a></td>
+    <td th:text="${message.description}">Text ...</td>
+</tr>
+</table>
+
+<!--<span th:text="${tutoriallist}"></span>-->
+
+</body>
+</html>
