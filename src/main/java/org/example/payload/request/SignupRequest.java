@@ -1,7 +1,6 @@
 package org.example.payload.request;
 
-
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 import java.util.Set;
 
 public class SignupRequest {

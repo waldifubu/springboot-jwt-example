@@ -6,13 +6,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import java.util.Arrays;
-
 @SpringBootApplication
-public class MySpringBootApplication {
-    public static void main(String[] args) {
+public class Application {
+
+    public static void main(String... args) {
         //System.setProperty("spring.devtools.restart.enabled", "false");
-        SpringApplication.run(MySpringBootApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     @Bean

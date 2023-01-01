@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,10 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 @Configuration
-@EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true)
+@EnableWebSecurity
 public class WebSecurityConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -57,7 +55,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+//        http
                 /*
                 .authorizeRequests()
                 .antMatchers("/css/**", "/js/**", "/registration").permitAll()
@@ -70,6 +68,8 @@ public class WebSecurityConfig {
                 .logout()
                 .permitAll()
                  */
+
+                /*
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
@@ -80,16 +80,17 @@ public class WebSecurityConfig {
                 .cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/css/**", "/js/**", "/api/test/**", "/", "/tutorials", "/hello",
+                .authorizeHttpRequests().requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/css/**", "/js/**", "/api/test/**", "/", "/tutorials", "/hello",
                         "/webjars/**", "Roboto-Regular.ttf")
                 .permitAll()
                 .anyRequest().authenticated();
+                 */
 
         /*
                 .formLogin().loginPage("/login").permitAll()
                 .and()
-                /*
+
                 authorizeRequests()
                 .antMatchers("/", "/home").permitAll() // (3)
                 .anyRequest().authenticated() // (4)
@@ -105,20 +106,45 @@ public class WebSecurityConfig {
                          .anyRequest().authenticated()
                  )*/
 
-        /*jhg
+        /*
                 .logout().permitAll()
 
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                */
+
                 //.and()
                 //.authorizeRequests().antMatchers("/api/auth/**").permitAll()
 
                 //.antMatchers("/login", "/home", "/tutorials", "/", "/api/test/**").permitAll();
-        ;
+        */
+
+        /*
+        .authorizeHttpRequests((requests) -> requests
+                .requestMatchers("/", "/home").permitAll()
+                .anyRequest().authenticated()
+        )
+                .formLogin((form) -> form
+                        .loginPage("/login")
+                        .permitAll()
+                )
+                .logout(LogoutConfigurer::permitAll);
+         */
+
+
+
         //.anyRequest().authenticated();
 
+
+        //http.authenticationProvider(authenticationProvider());
+        //http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests().requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/test/**").permitAll()
+                .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

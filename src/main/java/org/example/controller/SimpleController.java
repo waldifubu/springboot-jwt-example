@@ -32,7 +32,7 @@ public class SimpleController {
     JwtUtils jwtUtils;
 
     @GetMapping({"/", "/index"})
-    //@PreAuthorize("hasRole('ROLE_ANONYMOUS')")
+//    @PreAuthorize("hasRole('ROLE_ANONYMOUS')")
     public String homePage(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
